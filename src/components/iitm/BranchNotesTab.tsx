@@ -1,15 +1,24 @@
-
 import React, { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import BranchNotesAccordion from "./BranchNotesAccordion";
 import { useIITMBranchNotes, Note } from "./hooks/useIITMBranchNotes";
 
-const BranchNotesTab = () => {
-  const [branch, setBranch] = useState("data-science");
-  const [level, setLevel] = useState("foundation");
-  const [specialization, setSpecialization] = useState("all");
+interface BranchNotesTabProps {
+  selectedBranch?: string;
+  selectedLevel?: string;
+  onBranchLevelChange?: (branch: string, level: string) => void;
+}
 
+const BranchNotesTab: React.FC<BranchNotesTabProps> = ({
+  selectedBranch = "data-science",
+  selectedLevel = "foundation",
+  onBranchLevelChange
+}) => {
+  const [branch, setBranch] = useState(selectedBranch);
+  const [level, setLevel] = useState(selectedLevel);
+  const [specialization, setSpecialization] = useState("all");
+  
   const {
     loading,
     groupedNotes,
@@ -18,9 +27,26 @@ const BranchNotesTab = () => {
     reloadNotes,
   } = useIITMBranchNotes(branch, level);
 
+  // Update internal state when props change
+  useEffect(() => {
+    setBranch(selectedBranch);
+    setLevel(selectedLevel);
+  }, [selectedBranch, selectedLevel]);
+
   useEffect(() => {
     setSpecialization("all");
   }, [branch, level]);
+
+  const handleBranchChange = (newBranch: string) => {
+    setBranch(newBranch);
+    onBranchLevelChange?.(newBranch, level);
+  };
+
+  const handleLevelChange = (newLevel: string) => {
+    setLevel(newLevel);
+    setSpecialization('all');
+    onBranchLevelChange?.(branch, newLevel);
+  };
 
   const availableSpecializations = getAvailableSpecializations();
   const currentSubjects = getCurrentSubjects(specialization);
@@ -30,7 +56,7 @@ const BranchNotesTab = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Branch</label>
-          <Tabs value={branch} onValueChange={setBranch} className="w-full">
+          <Tabs value={branch} onValueChange={handleBranchChange} className="w-full">
             <TabsList className="w-full grid grid-cols-2">
               <TabsTrigger value="data-science">Data Science</TabsTrigger>
               <TabsTrigger value="electronic-systems">Electronic Systems</TabsTrigger>
@@ -39,7 +65,7 @@ const BranchNotesTab = () => {
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Level</label>
-          <Select value={level} onValueChange={(value) => { setLevel(value); setSpecialization('all'); }}>
+          <Select onValueChange={handleLevelChange} value={level}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select Level" />
             </SelectTrigger>
@@ -62,7 +88,7 @@ const BranchNotesTab = () => {
       {level === "diploma" && availableSpecializations.length > 0 && (
         <div className="mt-4">
           <label className="block text-sm font-medium text-gray-700 mb-1">Specialization</label>
-          <Select value={specialization} onValueChange={setSpecialization}>
+          <Select onValueChange={setSpecialization} value={specialization}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select Specialization" />
             </SelectTrigger>
@@ -88,7 +114,6 @@ const BranchNotesTab = () => {
             <span className="text-sm font-normal text-gray-600 ml-2">(Weeks 1-4 only)</span>
           )}
         </h2>
-
         <BranchNotesAccordion
           groupedNotes={groupedNotes}
           level={level}

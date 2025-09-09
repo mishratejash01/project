@@ -33,7 +33,7 @@ const IITMBSPrep = () => {
                 <TabsTrigger value="pyqs" className="whitespace-nowrap">PYQs</TabsTrigger>
                 <TabsTrigger value="syllabus" className="whitespace-nowrap">Syllabus</TabsTrigger>
                 <TabsTrigger value="tools" className="whitespace-nowrap">Tools</TabsTrigger>
-                <TabsTrigger
+                <TabsTrigger 
                   value="courses" 
                   className="whitespace-nowrap bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 text-white hover:from-yellow-500 hover:via-yellow-600 hover:to-yellow-700 data-[state=active]:bg-gradient-to-r data-[state=active]:from-yellow-500 data-[state=active]:via-yellow-600 data-[state=active]:to-yellow-700 shadow-lg border-2 border-yellow-400"
                 >
@@ -69,8 +69,8 @@ const IITMBSPrep = () => {
                     We've moved all our IITM BS tools to a dedicated page for better organization and easier access.
                     Find CGPA calculators, grade predictors, and more useful tools for your studies.
                   </p>
-                  <Link to="/tools/iitm-bs">
-                    <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white">
+                  <Link to="/iitmbstools">
+                    <Button className="bg-blue-600 hover:bg-blue-700 text-white" size="lg">
                       Visit IITM BS Tools Page
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>

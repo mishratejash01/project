@@ -42,28 +42,19 @@ const NavBar = () => {
             <Link className="text-gray-700 hover:text-royal transition-colors" to="/">
               Home
             </Link>
+            
             <Link className="text-gray-700 hover:text-royal transition-colors" to="/about">
               About
             </Link>
+            
             <Link className="text-gray-700 hover:text-royal transition-colors" to="/courses">
               Courses
             </Link>
             
-            {/* Tools Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button className="text-gray-700 hover:text-royal transition-colors flex items-center" variant="ghost">
-                  Tools
-                  <ChevronDown className="ml-1 h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem asChild>
-                  <Link to="/tools/iitm-bs">IITM BS Tools</Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-
+            <Link className="text-gray-700 hover:text-royal transition-colors" to="/iitmbstools">
+              IITM BS Tools
+            </Link>
+            
             {/* Exam Prep Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -154,31 +145,40 @@ const NavBar = () => {
               <Link className="block px-3 py-2 text-gray-700 hover:text-royal" to="/">
                 Home
               </Link>
+              
               <Link className="block px-3 py-2 text-gray-700 hover:text-royal" to="/about">
                 About
               </Link>
+              
               <Link className="block px-3 py-2 text-gray-700 hover:text-royal" to="/courses">
                 Courses
               </Link>
-              <Link className="block px-3 py-2 text-gray-700 hover:text-royal" to="/tools/iitm-bs">
+              
+              <Link className="block px-3 py-2 text-gray-700 hover:text-royal" to="/iitmbstools">
                 IITM BS Tools
               </Link>
+              
               <Link className="block px-3 py-2 text-gray-700 hover:text-royal" to="/exam-preparation">
                 Exam Preparation
               </Link>
+              
               <Link className="block px-3 py-2 text-gray-700 hover:text-royal ml-4" to="/exam-preparation/jee">
                 JEE Prep
               </Link>
+              
               <Link className="block px-3 py-2 text-gray-700 hover:text-royal ml-4" to="/exam-preparation/neet">
                 NEET Prep
               </Link>
+              
               <Link className="block px-3 py-2 text-gray-700 hover:text-royal ml-4" to="/exam-preparation/iitm-bs">
                 IITM BS Prep
               </Link>
+              
               <Link className="block px-3 py-2 text-gray-700 hover:text-royal" to="/career">
                 Career
               </Link>
               
+              <div className="border-t border-gray-200 pt-2" />
               {user ? (
                 <>
                   <Link className="block px-3 py-2 text-gray-700 hover:text-royal" to="/dashboard">

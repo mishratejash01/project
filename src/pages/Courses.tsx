@@ -1,6 +1,6 @@
-
 import React, { useState } from "react";
 import NavBar from "@/components/NavBar";
+import HeroCarousel from "@/components/HeroCarousel";
 import Footer from "@/components/Footer";
 import EmailPopup from "@/components/EmailPopup";
 import AdminAddButton from "@/components/admin/AdminAddButton";
@@ -35,27 +35,25 @@ const Courses = () => {
 
   return (
     <>
+      <HeroCarousel />
       <NavBar />
-      
       <main className="pt-20">
         <CoursesHeader />
-
         <section className="py-12 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center mb-8">
-              <CategoryFilter 
+              <CategoryFilter
                 categories={categories}
                 selectedCategory={selectedCategory}
                 onSelectCategory={setSelectedCategory}
               />
               
-              <AdminAddButton 
+              <AdminAddButton
                 contentType="courses"
               >
                 Add Course
               </AdminAddButton>
             </div>
-
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {contentLoading ? (
                 Array.from({ length: 6 }).map((_, index) => <CourseCardSkeleton key={index} />)
@@ -66,16 +64,14 @@ const Courses = () => {
               ) : (
                 <div className="col-span-full text-center py-16 text-gray-500">
                   <p className="text-lg">No courses found for this category.</p>
-                  <p>Please check back later or select a different category.</p>
+                  Please check back later or select a different category.
                 </div>
               )}
             </div>
           </div>
         </section>
-
         <WhyChooseUsSection />
       </main>
-
       <Footer />
       <EmailPopup />
     </>

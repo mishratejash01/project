@@ -1,14 +1,16 @@
-
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ExternalLink, ArrowRight } from "lucide-react";
 import BranchNotesTab from "@/components/iitm/BranchNotesTab";
 import PYQsTab from "@/components/iitm/PYQsTab";
 import NewsTab from "@/components/iitm/NewsTab";
 import ImportantDatesTab from "@/components/iitm/ImportantDatesTab";
 import SyllabusTab from "@/components/iitm/SyllabusTab";
-import IITMToolsTab from "@/components/iitm/IITMToolsTab";
 import PaidCoursesTab from "@/components/iitm/PaidCoursesTab";
 
 const IITMBSPrep = () => {
@@ -31,7 +33,7 @@ const IITMBSPrep = () => {
                 <TabsTrigger value="pyqs" className="whitespace-nowrap">PYQs</TabsTrigger>
                 <TabsTrigger value="syllabus" className="whitespace-nowrap">Syllabus</TabsTrigger>
                 <TabsTrigger value="tools" className="whitespace-nowrap">Tools</TabsTrigger>
-                <TabsTrigger 
+                <TabsTrigger
                   value="courses" 
                   className="whitespace-nowrap bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 text-white hover:from-yellow-500 hover:via-yellow-600 hover:to-yellow-700 data-[state=active]:bg-gradient-to-r data-[state=active]:from-yellow-500 data-[state=active]:via-yellow-600 data-[state=active]:to-yellow-700 shadow-lg border-2 border-yellow-400"
                 >
@@ -55,7 +57,26 @@ const IITMBSPrep = () => {
             </TabsContent>
             
             <TabsContent value="tools" className="mt-6">
-              <IITMToolsTab />
+              <Card className="max-w-2xl mx-auto">
+                <CardHeader className="text-center">
+                  <CardTitle className="text-2xl font-bold text-gray-900">IITM BS Tools</CardTitle>
+                  <CardDescription className="text-lg text-gray-600">
+                    All IITM BS Tools are now on a dedicated page
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="text-center space-y-4">
+                  <p className="text-gray-700">
+                    We've moved all our IITM BS tools to a dedicated page for better organization and easier access.
+                    Find CGPA calculators, grade predictors, and more useful tools for your studies.
+                  </p>
+                  <Link to="/tools/iitm-bs">
+                    <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white">
+                      Visit IITM BS Tools Page
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
             </TabsContent>
             
             <TabsContent value="courses" className="mt-6">

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
@@ -8,13 +7,29 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AdminAddButton from "@/components/admin/AdminAddButton";
 import { useBackend } from "@/components/BackendIntegratedWrapper";
 
-const PYQsTab = () => {
-  const [branch, setBranch] = useState("data-science");
-  const [level, setLevel] = useState("foundation");
+interface PYQsTabProps {
+  selectedBranch?: string;
+  selectedLevel?: string;
+  onBranchLevelChange?: (branch: string, level: string) => void;
+}
+
+const PYQsTab: React.FC<PYQsTabProps> = ({
+  selectedBranch = "data-science",
+  selectedLevel = "foundation",
+  onBranchLevelChange
+}) => {
+  const [branch, setBranch] = useState(selectedBranch);
+  const [level, setLevel] = useState(selectedLevel);
   const [examType, setExamType] = useState("quiz1");
   const [year, setYear] = useState("2023");
   
   const { handleDownload, downloadCounts, pyqs, contentLoading } = useBackend();
+
+  // Update internal state when props change
+  useEffect(() => {
+    setBranch(selectedBranch);
+    setLevel(selectedLevel);
+  }, [selectedBranch, selectedLevel]);
   
   // Filter PYQs for IITM BS with real-time updates
   const iitmPyqs = pyqs.filter(pyq => {
@@ -43,6 +58,16 @@ const PYQsTab = () => {
     }
   }, [availableYears, year]);
 
+  const handleBranchChange = (newBranch: string) => {
+    setBranch(newBranch);
+    onBranchLevelChange?.(newBranch, level);
+  };
+
+  const handleLevelChange = (newLevel: string) => {
+    setLevel(newLevel);
+    onBranchLevelChange?.(branch, newLevel);
+  };
+
   const handleDownloadClick = async (pyqId: string, fileUrl?: string) => {
     await handleDownload(pyqId, 'pyqs', fileUrl);
   };
@@ -53,7 +78,7 @@ const PYQsTab = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Branch</label>
-          <Tabs value={branch} onValueChange={setBranch}>
+          <Tabs onValueChange={handleBranchChange} value={branch}>
             <TabsList className="w-full grid grid-cols-2">
               <TabsTrigger value="data-science">Data Science</TabsTrigger>
               <TabsTrigger value="electronic-systems">Electronic Systems</TabsTrigger>
@@ -63,7 +88,7 @@ const PYQsTab = () => {
         
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Level</label>
-          <Tabs value={level} onValueChange={setLevel}>
+          <Tabs onValueChange={handleLevelChange} value={level}>
             <TabsList className="w-full grid grid-cols-4">
               <TabsTrigger value="foundation">Foundation</TabsTrigger>
               <TabsTrigger value="diploma">Diploma</TabsTrigger>
@@ -81,7 +106,7 @@ const PYQsTab = () => {
           {level !== "qualifier" && (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Exam Type</label>
-              <Tabs value={examType} onValueChange={setExamType}>
+              <Tabs onValueChange={setExamType} value={examType}>
                 <TabsList className="w-full grid grid-cols-3">
                   <TabsTrigger value="quiz1">Quiz 1</TabsTrigger>
                   <TabsTrigger value="quiz2">Quiz 2</TabsTrigger>
@@ -90,9 +115,10 @@ const PYQsTab = () => {
               </Tabs>
             </div>
           )}
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Year</label>
-            <Select value={year} onValueChange={setYear} disabled={availableYears.length === 0}>
+            <Select onValueChange={setYear} value={year} disabled={availableYears.length === 0}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select Year" />
               </SelectTrigger>
@@ -107,7 +133,7 @@ const PYQsTab = () => {
           </div>
         </div>
 
-        <AdminAddButton 
+        <AdminAddButton
           contentType="pyqs"
           examType="IITM_BS"
           branch={branch}
@@ -124,19 +150,21 @@ const PYQsTab = () => {
           </div>
         ) : (
           filteredPYQs.map((pyq) => (
-            <Card key={pyq.id} className="border-none shadow-md hover:shadow-lg transition-all">
+            <Card className="border-none shadow-md hover:shadow-lg transition-all" key={pyq.id}>
               <CardHeader>
                 <CardTitle className="text-lg">{pyq.title}</CardTitle>
-                <CardDescription>{pyq.description}</CardDescription>
-                {pyq.subject && (
-                  <div className="text-sm text-gray-600">Subject: {pyq.subject}</div>
-                )}
-                {pyq.session && (
-                  <div className="text-sm text-gray-600">Session: {pyq.session}</div>
-                )}
-                {pyq.shift && (
-                  <div className="text-sm text-gray-600">Shift: {pyq.shift}</div>
-                )}
+                <CardDescription>
+                  {pyq.description}
+                  {pyq.subject && (
+                    <div className="text-sm text-gray-600">Subject: {pyq.subject}</div>
+                  )}
+                  {pyq.session && (
+                    <div className="text-sm text-gray-600">Session: {pyq.session}</div>
+                  )}
+                  {pyq.shift && (
+                    <div className="text-sm text-gray-600">Shift: {pyq.shift}</div>
+                  )}
+                </CardDescription>
               </CardHeader>
               <CardFooter className="flex justify-between">
                 <ShimmerButton
